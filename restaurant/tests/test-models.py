@@ -2,11 +2,13 @@ from django.test import TestCase
 from restaurant.models import Menu, Booking
 from django.contrib.auth.models import User
 from rest_framework.test import APIClient
+from django.contrib.auth.models import Permission
 
 class MenuTest(TestCase):
   def setUp(self):
     self.client = APIClient()
     self.user = User.objects.create_user(username='abc', password='123')
+    self.user.is_staff = True
     self.client.login(username='abc', password='123')
 
     Menu.objects.create(name="Pizza", description="Margherita", price=10.00)

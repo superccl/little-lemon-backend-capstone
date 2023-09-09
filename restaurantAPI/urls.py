@@ -1,10 +1,11 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework import routers
 from . import views
 
+router = routers.DefaultRouter()
+router.register(r'menu', views.MenuViewSet, basename='menu')
+router.register(r'bookings', views.BookingViewSet, basename='booking')
 
 urlpatterns = [
-    path('menu/', views.MenuListCreateAPIView.as_view(), name="menu"),
-    path('menu/<int:pk>/', views.MenuItemDetailAPIView.as_view(), name="menu_item"),
-    path('bookings/', views.BookingListCreateAPIView.as_view(), name='bookings'),
-    path('bookings/<int:pk>/', views.BookinkItemDetailAPIView.as_view(), name='booking'),
+    path('', include(router.urls)),
 ]
