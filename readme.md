@@ -10,3 +10,6 @@ To create a user and login:
 2. Make a POST request to /auth/token/login
 
 Alternatively, you can use `python manage.py createsuperuser` and do anything via the admin panal.
+
+Run the test:
+`python manage.py test restaurant.tests.test-models`
