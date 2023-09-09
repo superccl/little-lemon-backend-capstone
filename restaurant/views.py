@@ -8,6 +8,7 @@ from datetime import datetime
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from restaurantAPI.serializers import MenuSerializer, BookingSerializer
 
 
 # Create your views here.
@@ -18,10 +19,14 @@ def about(request):
     return render(request, 'about.html')
 
 def reservations(request):
-    date = request.GET.get('date',datetime.today().date())
-    bookings = Booking.objects.all()
-    booking_json = serializers.serialize('json', bookings)
-    return render(request, 'bookings.html',{"bookings":booking_json})
+    date = request.GET.get('date')
+    if date:
+        bookings = Booking.objects.filter(reservation_date=date)
+    else:
+        bookings = Booking.objects.all()
+    bookings = bookings.order_by('reservation_date', 'reservation_slot')
+    booking_data = BookingSerializer(bookings, many=True).data
+    return render(request, 'bookings.html',{"bookings":booking_data})
 
 def book(request):
     form = BookingForm()
@@ -34,6 +39,10 @@ def book(request):
 
 # Add your code here to create new views
 def menu(request):
+    if request.method == 'POST':
+        form = Menu(request.POST)
+        if form.is_valid():
+            form.save()
     menu_data = Menu.objects.all()
     main_data = {"menu": menu_data}
     return render(request, 'menu.html', {"menu": main_data})
