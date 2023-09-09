@@ -13,3 +13,7 @@ Alternatively, you can use `python manage.py createsuperuser` and do anything vi
 
 Run the test:
 `python manage.py test restaurant.tests.test-models`
+
+Please configure the MySQL database:
+1. Create the database with the name mentioned in `settings.py` file
+2. Change the password to match your database password
